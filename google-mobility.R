@@ -40,9 +40,9 @@ az_data_2022 <- tidy_data_2022 %>%
 model_2020 <- lm(percent_change_from_baseline ~ sub_region_1 + place, data = tidy_data_2020)
 model_2021 <- lm(percent_change_from_baseline ~ sub_region_1 + place, data = tidy_data_2021)
 model_2022 <- lm(percent_change_from_baseline ~ sub_region_1 + place, data = tidy_data_2022)
-az_model_2020 <- lm(percent_change_from_baseline ~ sub_region_1 + place, data = az_data_2020)
-az_model_2021 <- lm(percent_change_from_baseline ~ sub_region_1 + place, data = az_data_2021)
-az_model_2022 <- lm(percent_change_from_baseline ~ sub_region_1 + place, data = az_data_2022)
+az_model_2020 <- lm(percent_change_from_baseline ~ place, data = az_data_2020)
+az_model_2021 <- lm(percent_change_from_baseline ~ place, data = az_data_2021)
+az_model_2022 <- lm(percent_change_from_baseline ~ place, data = az_data_2022)
 
 
 us_mobility_2020 <- effect("place", model_2020) %>%
@@ -73,12 +73,7 @@ az_mobility <- merge(az_mobility_2020, az_mobility_2021, all=TRUE)
 az_mobility <- merge(az_mobility, az_mobility_2022, all=TRUE)
 
 
-az_mobility_2020 <- effect("place", az_model_2020) %>%
-  data.frame()
-az_mobility_2021 <- effect("place", az_model_2021) %>%
-  data.frame()
-az_mobility_2022 <- effect("place", az_model_2022) %>%
-  data.frame()
+
 az_mobility %>%
   ggplot(aes(y = reorder(place, fit, group=year, color=year),
              x = fit,
@@ -92,4 +87,4 @@ az_mobility %>%
        x = "mobility change percent change from baseline",
        y = "place",
        caption = "data from Google Mobility")
-
+ggsave("az_mobility.png")
