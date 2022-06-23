@@ -86,7 +86,7 @@ ui <- fluidPage(
     # Application title
     titlePanel("Google Mobility Data - COVID"),
 
-    # Sidebar with a slider input for number of bins 
+    # Sidebar with a slider input for number of bins
     sidebarLayout(
         sidebarPanel(
             p('Click on the tabs to choose different visualizations of the data.'),
@@ -116,13 +116,13 @@ ui <- fluidPage(
 server <- function(input, output) {
 
     output$error_plot <- renderPlot({
-        data_to_plot <- az_mobility %>% 
-          group(year)
-        
-        chosen_year <- az_mobility %>% 
+        data_to_plot <- az_mobility %>%
+          group_by(year)
+
+        chosen_year <- az_mobility %>%
           filter(year == input$year_chosen)
-        
-        data_to_plot %>% 
+
+        data_to_plot %>%
           ggplot(aes(y = reorder(place, fit),
                      x = fit,
                      xmax = upper,
@@ -135,14 +135,13 @@ server <- function(input, output) {
                         data = chosen_year) +
           geom_vline(xintercept = 0) +
           geom_label(aes(label = format(fit, digits = 3)),
-                     data = highlighted_year) +
+                     data = year_chosen) +
           labs(title = "Mobility Change in Arizona",
                subtitle = "across Arizona, pre-pandemic baseline",
                x = "mobility change percent change from baseline",
-               y = "place",
-               caption = "data from Google Mobility")
+               y = "place")
     })
 }
 
-# Run the application 
+# Run the application
 shinyApp(ui = ui, server = server)

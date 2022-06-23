@@ -2,9 +2,9 @@ library(tidyverse)
 library(effects)
 
 # read in data from all three years
-mobility_data_2020 <- read_csv("data/2020_US_Region_Mobility_Report.csv")
-mobility_data_2021 <- read_csv("data/2021_US_Region_Mobility_Report.csv")
-mobility_data_2022 <- read_csv("data/2022_US_Region_Mobility_Report.csv")
+mobility_data_2020 <- read_csv("covid_mobility_data/data/2020_US_Region_Mobility_Report.csv")
+mobility_data_2021 <- read_csv("covid_mobility_data/data/2021_US_Region_Mobility_Report.csv")
+mobility_data_2022 <- read_csv("covid_mobility_data/data/2022_US_Region_Mobility_Report.csv")
 
 # add year column to each dataframe
 mobility_data_2020$year <- 2020
@@ -67,24 +67,27 @@ az_mobility_2021$year <- 2021
 az_mobility_2022$year <- 2022
 
 
-us_mobility <- merge(us_mobility_2020, us_mobility_2021, all=TRUE)
-us_mobility <- merge(us_mobility, us_mobility_2022, all=TRUE)
-az_mobility <- merge(az_mobility_2020, az_mobility_2021, all=TRUE)
-az_mobility <- merge(az_mobility, az_mobility_2022, all=TRUE)
+us_mobility <- bind_rows(us_mobility_2020, us_mobility_2021, us_mobility_2022)
+az_mobility <- bind_rows(az_mobility_2020, az_mobility_2021, az_mobility_2022)
+
+
+# save dataframes as csv
+write.csv(us_mobility,"covid_mobility_data/data/us_place_effect_mobility.csv", row.names = FALSE)
+write.csv(az_mobility,"covid_mobility_data/data/az_place_effect_mobility.csv", row.names = FALSE)
 
 
 
-az_mobility %>%
-  ggplot(aes(y = reorder(place, fit, group=year, color=year),
-             x = fit,
-             xmax = upper,
-             xmin = lower)) +
-  geom_errorbar(width = 0.5) +
-  geom_vline(xintercept = 0) +
-  # geom_label(aes(label = format(fit, digits = 3)), nudge_y = .5) +
-  labs(title = "Mobility Change in Arizona",
-       subtitle = "across Arizona, pre-pandemic baseline",
-       x = "mobility change percent change from baseline",
-       y = "place",
-       caption = "data from Google Mobility")
-ggsave("az_mobility.png")
+# az_mobility %>%
+#   ggplot(aes(y = reorder(place, fit, group=year, color=year),
+#              x = fit,
+#              xmax = upper,
+#              xmin = lower)) +
+#   geom_errorbar(width = 0.5) +
+#   geom_vline(xintercept = 0) +
+#   # geom_label(aes(label = format(fit, digits = 3)), nudge_y = .5) +
+#   labs(title = "Mobility Change in Arizona",
+#        subtitle = "across Arizona, pre-pandemic baseline",
+#        x = "mobility change percent change from baseline",
+#        y = "place",
+#        caption = "data from Google Mobility")
+# ggsave("az_mobility.png")
