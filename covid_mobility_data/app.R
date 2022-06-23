@@ -29,22 +29,13 @@ ui <- fluidPage(
             HTML('Data is from the <a href="https://www.google.com/covid19/mobility/">Google Community Mobility Reports</a>')
         ),
 
-        # Show a plot of the generated distribution
         mainPanel(
-          tabsetPanel(type = "tabs",
-                      tabPanel("Timeline",
-                               selectInput("year_chosen",
-                                           "Select Year to Highlight:",
-                                           choices = year_options),
-                        plotOutput("error_plot"),
-                        plotOutput("error_plot_2")),
-                      tabPanel("Map",
-                               selectInput("year_chosen",
-                                           "Select Year to Highlight:",
-                                           choices = year_options),
-                               plotOutput("map_plot"))
-            )
-        )
+            selectInput("year_chosen",
+                        "Select Year to Highlight:",
+                        choices = year_options),
+            plotOutput("error_plot"),
+            plotOutput("error_plot_2")
+          )
     )
 )
 

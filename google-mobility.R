@@ -74,20 +74,3 @@ az_mobility <- bind_rows(az_mobility_2020, az_mobility_2021, az_mobility_2022)
 # save dataframes as csv
 write.csv(us_mobility,"covid_mobility_data/data/us_place_effect_mobility.csv", row.names = FALSE)
 write.csv(az_mobility,"covid_mobility_data/data/az_place_effect_mobility.csv", row.names = FALSE)
-
-
-
-# az_mobility %>%
-#   ggplot(aes(y = reorder(place, fit, group=year, color=year),
-#              x = fit,
-#              xmax = upper,
-#              xmin = lower)) +
-#   geom_errorbar(width = 0.5) +
-#   geom_vline(xintercept = 0) +
-#   # geom_label(aes(label = format(fit, digits = 3)), nudge_y = .5) +
-#   labs(title = "Mobility Change in Arizona",
-#        subtitle = "across Arizona, pre-pandemic baseline",
-#        x = "mobility change percent change from baseline",
-#        y = "place",
-#        caption = "data from Google Mobility")
-# ggsave("az_mobility.png")
