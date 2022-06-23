@@ -89,7 +89,7 @@ ggsave("az_mobility.png")
 
 read_mobility_data_year <- function(region_name, year) {
   # read in dataframe from csv
-  mobility_data <- read_csv("data/" + year + "_US_Region_Mobility_Report.csv")
+  mobility_data <- read_csv("covid_mobility_data/data/" + year + "_US_Region_Mobility_Report.csv")
 
   # tidy the data
   tidy_data <- mobility_data %>%
@@ -128,3 +128,5 @@ read_mobility_data <- function(region_name) {
 
   return(mobility_effect)
 }
+
+read_mobility_data('Arizona')
